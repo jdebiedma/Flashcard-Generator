@@ -1,0 +1,6 @@
+
+[
+["Who programmed this game?", "Hungrybox"], 
+["Who is currently the president, unfortunately?", "Donald Trump"], 
+["What year did SSBM come out?", "2001"]
+]

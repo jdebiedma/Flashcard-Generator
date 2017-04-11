@@ -1,12 +1,17 @@
 var inquirer = require("inquirer");
 var fs = require("fs");
 
+var questions = [];
+var answers = [];
+
+var newcount = 0;
+
 function BasicCard (front, back) {
 
 	this.front = front;
 	this.back = back;
 
-	inquirer.prompt([
+	this.begin = function() {inquirer.prompt([
 
 		  {
 		    type: "confirm",
@@ -18,7 +23,15 @@ function BasicCard (front, back) {
 
 		  	console.log(back);
 
+		  	newcount++;
+
+		  	if (newcount < 3) {
+
+		  	doBasic();
+		  }
+
 		  });
+  	}
 } 
 
 function ClozeCard (text, cloze) {
@@ -62,7 +75,7 @@ function ClozeCard (text, cloze) {
 
 	}
 
-	inquirer.prompt([
+	this.begin = function() {inquirer.prompt([
 
 		  {
 		    type: "confirm",
@@ -75,12 +88,76 @@ function ClozeCard (text, cloze) {
 		  	console.log("Answer: " + cloze);
 
 		  });
+	}  
 	
 }
 
-// var firstPresident = new BasicCard(
-//     "Who was the first president of the United States?", "George Washington");
 
-var firstPresidentCloze = new ClozeCard(
-    "George Washington was the first president of the United States.", "George Washington");
+
+inquirer.prompt([
+
+		{
+		    type: "list",
+		    name: "firstChoice",
+		    message: "What would you like to do?",
+		    choices: ["Practice with Basic Flashcards", "Practice with Cloze Flashcards", "Add Flashcard", "Remove Flashcard"]
+  		},
+
+	]).then(function(user) {
+
+		if (user.firstChoice === "Practice with Cloze Flashcards") {
+
+	
+
+				var firstPresidentCloze = new ClozeCard(
+    				"George Washington was the first president of the United States.", "George Washington");
+
+
+		}
+
+		else if (user.firstChoice === "Practice with Basic Flashcards") {
+
+			
+
+			doBasic();
+    			
+		}
+
+	
+
+	}).catch(function () {
+     console.log("Promise Rejected");
+  });
+
+
+function doBasic () {
+
+	fs.readFile("basic-storage.txt", 'utf8', function(error, data) {        
+        if (error) {
+            console.log("There's an error.")
+		}
+			
+
+			
+
+
+			var juicy = JSON.parse(data)[newcount][0];
+			var poopy = JSON.parse(data)[newcount][1];
+
+
+			var newCard = new BasicCard(juicy, poopy);
+
+			newCard.begin();
+
+
+
+		});
+
+
+	
+
+
+}
+
+
 
