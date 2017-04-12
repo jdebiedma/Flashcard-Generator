@@ -1,14 +1,16 @@
 var inquirer = require("inquirer");
 var fs = require("fs");
 
-var questions = [];
-var answers = [];
+var basicQ = [];
+var basicA = [];
 
 var newcount = 0;
 var twocount = 0;
 
 var basicLength;
 var clozeLength;
+
+var newCardCount;
 
 function BasicCard (front, back) {
 
@@ -111,16 +113,16 @@ inquirer.prompt([
 		    type: "list",
 		    name: "firstChoice",
 		    message: "What would you like to do?",
-		    choices: ["Practice with Basic Flashcards", "Practice with Cloze Flashcards", "Add Basic Flashcards", "Add Cloze Flashcards"]
+		    choices: ["Practice Stored Basic Flashcards", "Practice Stored Cloze Flashcards", "Add Basic Flashcards", "Add Cloze Flashcards"]
   		},
 
 	]).then(function(user) {
 
-		if (user.firstChoice === "Practice with Cloze Flashcards") {
+		if (user.firstChoice === "Practice Stored Cloze Flashcards") {
 			doCloze();
 		}
 
-		else if (user.firstChoice === "Practice with Basic Flashcards") {
+		else if (user.firstChoice === "Practice Stored Basic Flashcards") {
 			doBasic();   			
 		}
 
@@ -139,9 +141,9 @@ inquirer.prompt([
 
 		  	console.log(user.numCards);
 
-		  	var newCardCount = parseInt(user.numCards);
+		  	newCardCount = parseInt(user.numCards);
 
-		  	//doBasicAdder(); make this function work
+		  	doBasicMaker();
 
 		  });
 
@@ -215,5 +217,44 @@ function doCloze () {
 
 			newCloze.begin();
 		});	
+
+}
+
+function doBasicMaker() {
+
+	inquirer.prompt([
+		{
+			name: "basicFront",
+			message: "What does the front of the card say?"
+		}, 
+	
+		{
+			name: "basicBack",
+			message: "What does the back of the card say?"
+		}
+		
+			]).then(function(input) {
+
+				var newBasic = new BasicCard(input.basicFront, input.basicBack);
+
+				basicQ.push(newBasic);
+
+				if (basicQ.length < newCardCount) {
+					basicQ.push(newBasic);
+					doBasicMaker();
+				} 
+
+				else {
+
+					console.log('Complete!');
+
+					
+
+					// for (var i = 0; i < newCardCount; i++) {
+					// 	newBasic.begin();
+					// }
+				}
+
+			});
 
 }
