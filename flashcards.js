@@ -111,7 +111,7 @@ inquirer.prompt([
 		    type: "list",
 		    name: "firstChoice",
 		    message: "What would you like to do?",
-		    choices: ["Practice with Basic Flashcards", "Practice with Cloze Flashcards", "Add Flashcard", "Remove Flashcard"]
+		    choices: ["Practice with Basic Flashcards", "Practice with Cloze Flashcards", "Add Basic Flashcards", "Add Cloze Flashcards"]
   		},
 
 	]).then(function(user) {
@@ -122,6 +122,53 @@ inquirer.prompt([
 
 		else if (user.firstChoice === "Practice with Basic Flashcards") {
 			doBasic();   			
+		}
+
+		else if (user.firstChoice === "Add Basic Flashcards") {
+
+			inquirer.prompt([
+
+		  {
+		    type: "list",
+		    name: "numCards",
+		    message: "How many new basic flashcards are you making?",
+		    choices: ["1", "2", "3", "4", "5"]
+		  },
+
+		  ]).then(function(user) {
+
+		  	console.log(user.numCards);
+
+		  	var newCardCount = parseInt(user.numCards);
+
+		  	//doBasicAdder(); make this function work
+
+		  });
+
+//		I left in the commands below in case you wanted to test their functionality later.			
+
+// 	var firstPresident = new BasicCard(
+//     "Who was the first president of the United States?", "George Washington");
+
+// // "Who was the first president of the United States?"
+// console.log(firstPresident.front); 
+
+// // "George Washington"
+// console.log(firstPresident.back); 
+
+// var firstPresidentCloze = new ClozeCard(
+//     "George Washington was the first president of the United States.", "George Washington");
+
+// // "George Washington"
+// console.log(firstPresidentCloze.cloze); 
+
+// // " ... was the first president of the United States.
+// firstPresidentCloze.returnPartial(); 
+
+// // "George Washington was the first president of the United States.
+// firstPresidentCloze.returnFull();
+
+
 		}
 
 	
