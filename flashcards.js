@@ -5,6 +5,10 @@ var questions = [];
 var answers = [];
 
 var newcount = 0;
+var twocount = 0;
+
+var basicLength;
+var clozeLength;
 
 function BasicCard (front, back) {
 
@@ -25,7 +29,7 @@ function BasicCard (front, back) {
 
 		  	newcount++;
 
-		  	if (newcount < 3) {
+		  	if (newcount < basicLength) {
 
 		  	doBasic();
 		  }
@@ -87,6 +91,13 @@ function ClozeCard (text, cloze) {
 
 		  	console.log("Answer: " + cloze);
 
+		  	twocount++;
+
+		  	if (twocount < clozeLength) {
+
+		  	doCloze();
+		  }
+
 		  });
 	}  
 	
@@ -106,21 +117,11 @@ inquirer.prompt([
 	]).then(function(user) {
 
 		if (user.firstChoice === "Practice with Cloze Flashcards") {
-
-	
-
-				var firstPresidentCloze = new ClozeCard(
-    				"George Washington was the first president of the United States.", "George Washington");
-
-
+			doCloze();
 		}
 
 		else if (user.firstChoice === "Practice with Basic Flashcards") {
-
-			
-
-			doBasic();
-    			
+			doBasic();   			
 		}
 
 	
@@ -136,10 +137,9 @@ function doBasic () {
         if (error) {
             console.log("There's an error.")
 		}
-			
+			basicLength = JSON.parse(data).length;
 
 			
-
 
 			var juicy = JSON.parse(data)[newcount][0];
 			var poopy = JSON.parse(data)[newcount][1];
@@ -149,15 +149,24 @@ function doBasic () {
 
 			newCard.begin();
 
-
-
 		});
-
-
-	
-
-
 }
 
 
+function doCloze () {
 
+	fs.readFile("cloze-storage.txt", 'utf8', function(error, data) {        
+	    if (error) {
+	        console.log("There's an error.")
+		}
+			clozeLength = JSON.parse(data).length;
+
+			var joopy = JSON.parse(data)[twocount][0];
+			var zoopy = JSON.parse(data)[twocount][1];
+
+			var newCloze = new ClozeCard(joopy, zoopy);
+
+			newCloze.begin();
+		});	
+
+}
