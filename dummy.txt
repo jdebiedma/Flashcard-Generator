@@ -1,6 +1,0 @@
-[
-["What is my name?", "Juan"],
-
-["Who dat?", "Dat Boi."]
-
-]
