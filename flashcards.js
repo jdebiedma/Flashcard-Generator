@@ -2,7 +2,7 @@ var inquirer = require("inquirer");
 var fs = require("fs");
 
 var basicQ = [];
-var basicA = [];
+var basicX = [];
 
 var newcount = 0;
 var twocount = 0;
@@ -151,6 +151,28 @@ function startMe() {
 		  	doBasicMaker();
 
 		  });
+		}
+
+		else if (user.firstChoice === "Add Cloze Flashcards") {
+
+			inquirer.prompt([
+
+		  {
+		    type: "list",
+		    name: "numCards",
+		    message: "How many new cloze flashcards are you making?",
+		    choices: ["1", "2", "3", "4", "5"]
+		  },
+
+		  ]).then(function(user) {
+
+		  	console.log(user.numCards);
+
+		  	newCardCount = parseInt(user.numCards);
+
+		  	doClozeMaker();
+
+		  });
 
 
 		}
@@ -249,7 +271,7 @@ function doBasicMaker() {
 						        return console.log(err);
 						    }
 
-						    console.log("New flashcards saved!");
+						    console.log("New basic flashcards saved!");
 
 						    startMe();
 
@@ -265,5 +287,78 @@ function doBasicMaker() {
 				
 
 			});
+
+}
+
+function doClozeMaker() {
+
+	inquirer.prompt([
+		{
+			name: "clozeFront",
+			message: "What is the full text of the card? (Do not include quotes)"
+		}, 
+	
+		{
+			name: "clozeBack",
+			message: "What is the omitted cloze text of the card? (Do not include quotes)"
+		}
+		
+			]).then(function(input) {
+
+					if ((input.clozeFront).includes(input.clozeBack)) {
+
+						var newClozeCard = [input.clozeFront, input.clozeBack];
+
+					}
+
+					else {throw new Error("Cloze Text not found within full text! Please fix flashcard.")}
+				
+				
+
+				if (basicX.length < newCardCount) {
+					basicX.push(newClozeCard);
+
+					if (basicX.length < newCardCount) {
+					doClozeMaker();
+					}
+
+					else {
+
+						fs.readFile("cloze-storage.txt", 'utf8', function(error, data) {        
+					        if (error) {
+					            console.log("There's an error.")
+							}
+
+							oldData = JSON.parse(data);
+
+							for (var i = 0; i < basicX.length; i++) {
+								oldData.push(basicX[i]);
+							}
+
+							console.log(oldData);
+
+							fs.writeFile("cloze-storage.txt", JSON.stringify(oldData), function(err) {
+							if(err) {
+						        return console.log(err);
+						    }
+
+						    console.log("New cloze flashcards saved!");
+
+						    startMe();
+
+						});
+
+						});	
+
+
+					}
+
+			
+				} 
+				
+
+			});
+
+
 
 }

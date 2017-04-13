@@ -1,6 +1,1 @@
-
-[
-["Hungrybox programmed this game.", "Hungrybox"], 
-["Donald Trump is currenlty the president of the United States.", "Donald Trump"], 
-["SSBM was released in the year 2001.", "2001"]
-]
+[["Hungrybox programmed this game.","Hungrybox"],["Donald Trump is currenlty the president of the United States.","Donald Trump"],["SSBM was released in the year 2001.","2001"],["Hungrybox is 23 years old.","Hungrybox"],["Spongebob Squarepants","Spongebob"],["This program was written with JavaScript.","JavaScript"],["I am a computer.","computer"]]
