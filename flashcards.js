@@ -12,6 +12,8 @@ var clozeLength;
 
 var newCardCount;
 
+var oldData;
+
 function BasicCard (front, back) {
 
 	this.front = front;
@@ -105,9 +107,12 @@ function ClozeCard (text, cloze) {
 	
 }
 
+startMe();
 
 
-inquirer.prompt([
+function startMe() {
+
+	inquirer.prompt([
 
 		{
 		    type: "list",
@@ -147,29 +152,6 @@ inquirer.prompt([
 
 		  });
 
-//		I left in the commands below in case you wanted to test their functionality later.			
-
-// 	var firstPresident = new BasicCard(
-//     "Who was the first president of the United States?", "George Washington");
-
-// // "Who was the first president of the United States?"
-// console.log(firstPresident.front); 
-
-// // "George Washington"
-// console.log(firstPresident.back); 
-
-// var firstPresidentCloze = new ClozeCard(
-//     "George Washington was the first president of the United States.", "George Washington");
-
-// // "George Washington"
-// console.log(firstPresidentCloze.cloze); 
-
-// // " ... was the first president of the United States.
-// firstPresidentCloze.returnPartial(); 
-
-// // "George Washington was the first president of the United States.
-// firstPresidentCloze.returnFull();
-
 
 		}
 
@@ -178,6 +160,8 @@ inquirer.prompt([
 	}).catch(function () {
      console.log("Promise Rejected");
   });
+
+}	
 
 
 function doBasic () {
@@ -235,25 +219,50 @@ function doBasicMaker() {
 		
 			]).then(function(input) {
 
-				var newBasic = new BasicCard(input.basicFront, input.basicBack);
-
-				basicQ.push(newBasic);
+				var newBasic = [input.basicFront, input.basicBack];
+				
 
 				if (basicQ.length < newCardCount) {
 					basicQ.push(newBasic);
+
+					if (basicQ.length < newCardCount) {
 					doBasicMaker();
+					}
+
+					else {
+
+						fs.readFile("basic-storage.txt", 'utf8', function(error, data) {        
+					        if (error) {
+					            console.log("There's an error.")
+							}
+
+							oldData = JSON.parse(data);
+
+							for (var i = 0; i < basicQ.length; i++) {
+								oldData.push(basicQ[i]);
+							}
+
+							console.log(oldData);
+
+							fs.writeFile("basic-storage.txt", JSON.stringify(oldData), function(err) {
+							if(err) {
+						        return console.log(err);
+						    }
+
+						    console.log("New flashcards saved!");
+
+						    startMe();
+
+						});
+
+						});	
+
+
+					}
+
+			
 				} 
-
-				else {
-
-					console.log('Complete!');
-
-					
-
-					// for (var i = 0; i < newCardCount; i++) {
-					// 	newBasic.begin();
-					// }
-				}
+				
 
 			});
 

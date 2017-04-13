@@ -1,6 +1,1 @@
-
-[
-["Who programmed this game?", "Hungrybox"], 
-["Who is currently the president, unfortunately?", "Donald Trump"], 
-["What year did SSBM come out?", "2001"]
-]
+[["What is my name?","Juan"],["Who dat?","Dat Boi."],["What is next to you?","Pound Cake"],["How old are you?","23"]]
